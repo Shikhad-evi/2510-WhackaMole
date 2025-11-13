@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 
 const GameContext = createContext();
 
@@ -11,84 +11,50 @@ export const useGame = () => {
 };
 
 export const GameProvider = ({ children }) => {
-  const [gameState, setGameState] = useState('welcome');
+  const [gameState, setGameState] = useState('welcome'); // 'welcome', 'playing'
   const [score, setScore] = useState(0);
   const [molePosition, setMolePosition] = useState(null);
   const [highScores, setHighScores] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(15);
-  const [isGameActive, setIsGameActive] = useState(false);
-  
-  const timerRef = useRef(null);
+
   const TOTAL_HOLES = 9;
 
   const startGame = useCallback(() => {
     setGameState('playing');
     setScore(0);
-    setTimeLeft(15);
-    setIsGameActive(true);
+    // Set initial random mole position
     setMolePosition(Math.floor(Math.random() * TOTAL_HOLES));
   }, []);
 
-  const stopGame = useCallback(() => {
-    setIsGameActive(false);
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-  }, []);
-
   const restartGame = useCallback(() => {
+    // Save score to high scores if it's greater than 0
     if (score > 0) {
       setHighScores(prev => {
         const newScores = [...prev, score].sort((a, b) => b - a).slice(0, 5);
         return newScores;
       });
     }
-    stopGame();
     setGameState('welcome');
-  }, [score, stopGame]);
+  }, [score]);
 
   const whackMole = useCallback(() => {
-    if (gameState !== 'playing' || !isGameActive) return;
+    if (gameState !== 'playing') return;
     
     setScore(prev => prev + 1);
     
+    // Move mole to new random position (different from current)
     let newPosition;
     do {
       newPosition = Math.floor(Math.random() * TOTAL_HOLES);
     } while (newPosition === molePosition);
     
     setMolePosition(newPosition);
-  }, [gameState, molePosition, isGameActive]);
-
-  // Timer effect
-  useEffect(() => {
-    if (isGameActive) {
-      timerRef.current = setInterval(() => {
-        setTimeLeft(prev => {
-          if (prev <= 1) {
-            stopGame();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, [isGameActive, stopGame]);
+  }, [gameState, molePosition]);
 
   const value = {
     gameState,
     score,
     molePosition,
     highScores,
-    timeLeft,
-    isGameActive,
     startGame,
     restartGame,
     whackMole,

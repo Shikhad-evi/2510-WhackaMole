@@ -1,0 +1,198 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Welcome Screen Styles */
+.welcome-screen {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.welcome-screen h1 {
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 3rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.instructions {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.instructions h2 {
+  color: #333;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.instructions p {
+  margin-bottom: 10px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.high-scores {
+  background: #fff3cd;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  border: 2px solid #ffeaa7;
+}
+
+.high-scores h3 {
+  color: #856404;
+  margin-bottom: 15px;
+}
+
+.high-scores ol {
+  text-align: left;
+  margin-left: 20px;
+}
+
+.high-scores li {
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+  color: #856404;
+}
+
+.play-button, .restart-button {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+}
+
+.play-button:hover, .restart-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+}
+
+/* Game Board Styles */
+.game-board {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 0 20px;
+}
+
+.score {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Holes Grid */
+.holes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Hole Styles */
+.hole {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.hole:active {
+  transform: scale(0.95);
+}
+
+.hole-top {
+  width: 100%;
+  height: 100%;
+  background-image: url('/hole.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+}
+
+.hole.with-mole .hole-top::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 0;
+  width: 100%;
+  height: 120%;
+  background-image: url('/mole.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: popUp 0.3s ease;
+}
+
+@keyframes popUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .welcome-screen, .game-board {
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  .holes-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  
+  .hole {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .welcome-screen h1 {
+    font-size: 2rem;
+  }
+}
